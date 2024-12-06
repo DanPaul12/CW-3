@@ -2,7 +2,7 @@ from flask import Flask
 from flask_graphql import GraphQLView
 import graphene
 from movie_schema import Query, Mutation
-from genre_schema import Query, Mutation
+#from genre_schema import Query, Mutation
 from models import db
 
 app = Flask(__name__)
