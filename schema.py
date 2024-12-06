@@ -116,7 +116,7 @@ class DeleteGenre(graphene.Mutation):
     class Arguments:
         id = graphene.Int(required=True)
 
-    movie = graphene.Field(Movie)
+    genre = graphene.Field(Genre)
 
     def mutate(self, info, id):
         with Session(db.engine) as session:
