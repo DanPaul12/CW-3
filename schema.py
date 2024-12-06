@@ -42,7 +42,15 @@ class UpdateMovie(graphene.Mutation):
     def mutate(self, info, id, title, director, year):
         with Session(db.engine) as session:
             with session.begin():
-                pass
+                movie = session.execute(db.select(MovieModel).where(MovieModel.id == id)).scalars().first()
+                if movie:
+                    movie.title = title
+                    movie.director = director
+                    movie.year = year
+                else:
+                    return None
+                session.refresh(movie)
+                return UpdateMovie(movie=movie)
         
 class DeleteMovie(graphene.Mutation):
     class Arguments:
@@ -65,3 +73,5 @@ class DeleteMovie(graphene.Mutation):
         
 class Mutation(graphene.ObjectType):
     create_movie = AddMovie.Field()
+    update_movie = UpdateMovie.Field()
+    delete_movie = DeleteMovie.Field()
