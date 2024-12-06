@@ -49,8 +49,8 @@ class UpdateMovie(graphene.Mutation):
                     movie.year = year
                 else:
                     return None
-                session.refresh(movie)
-                return UpdateMovie(movie=movie)
+            session.refresh(movie)
+            return UpdateMovie(movie=movie)
         
 class DeleteMovie(graphene.Mutation):
     class Arguments:
@@ -66,8 +66,8 @@ class DeleteMovie(graphene.Mutation):
                     session.delete(movie)
                 else:
                     return None
-                session.refresh(movie)
-                return DeleteMovie(movie=movie)
+            session.refresh(movie)
+            return DeleteMovie(movie=movie)
 
 
         
