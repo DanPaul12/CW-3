@@ -16,6 +16,7 @@ app.add_url_rule(
     view_func= GraphQLView.as_view('graphql', schema=schema, graphiql = True)
 )
 
+
 with app.app_context():
     db.create_all()
 
