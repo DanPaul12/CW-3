@@ -6,6 +6,13 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 
+class Movie_Genre(Base):
+    __tablename__ = 'movies_genres'
+    id: Mapped[int] = mapped_column(primary_key=True)
+    movie_id: Mapped[int] = mapped_column(db.ForeignKey('movies.id'))
+    genre_id: Mapped[int] = mapped_column(db.ForeignKey("genres.id"))
+
+
 class Movie(Base):
     __tablename__ = 'movies'
     id: Mapped[int] = mapped_column(primary_key=True)
