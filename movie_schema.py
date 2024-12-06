@@ -71,6 +71,8 @@ class DeleteGenre(graphene.Mutation):
 class Query(graphene.ObjectType):
     movies = graphene.List(Movie)
     genres = graphene.List(Genre)
+    get_movies_by_genre = graphene.List(Movie, genre_id=graphene.Int(required=True))
+    get_genre_by_movie = graphene.List(Genre, movie_id=graphene.Int(required=True))
 
     def resolve_movies(self, info):
         return db.session.execute(db.select(MovieModel)).scalars()
@@ -78,12 +80,21 @@ class Query(graphene.ObjectType):
     def resolve_genres(self, info):
         return db.session.execute(db.select(GenreModel)).scalars()
     
-    def resolve_get_movies_by_genre(self, info, id):
+    def resolve_get_movies_by_genre(self, info, genre_id):
         with Session(db.engine) as session:
             query = (
                 session.query(MovieModel)
                 .join(MovieGenreModel, MovieModel.id == MovieGenreModel.movie_id)
-                .filter(MovieGenreModel.genre_id == id)
+                .filter(MovieGenreModel.genre_id == genre_id)
+            )
+            return query.all()
+        
+    def resolve_get_genre_by_movie(self, info, movie_id):
+        with Session(db.engine) as session:
+            query = (
+                session.query(GenreModel)
+                .join(MovieGenreModel, GenreModel.id == MovieGenreModel.genre_id)
+                .filter(MovieGenreModel.movie_id == movie_id)
             )
             return query.all()
     
